@@ -8,8 +8,8 @@
   "scripts": {
     "build": "nest build",
     "dev": "nest start --watch",
-    "dev:main": "cd apps/main && nest start --debug --watch",
-    "dev:server1": "nest start @app/server1 --debug --watch"
+    "dev:auth": "cd apps/auth && nest start --debug --watch",
+    "dev:main": "cd apps/main && nest start --debug --watch"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.15",
