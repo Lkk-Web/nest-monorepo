@@ -10,8 +10,7 @@ import { JwtDecodeController } from '@core/decorator/controller'
 
 @ApiTags('我的')
 @ApiBearerAuth()
-@Controller('base')
-@JwtDecodeController('')
+@JwtDecodeController('base')
 export class MiController {
   constructor(private readonly service: MiService, private readonly fileService: FileService) {}
 
@@ -37,8 +36,6 @@ export class MiController {
   async getUserInfo(@Body(new CensorParamPipe()) dto: TokenGetUserDto, @Req() req) {
     return await this.service.tokenGetUser(dto)
   }
-
-
 
   @ApiOperation({ summary: '微服务Token验证' })
   @OpenAuthorize()

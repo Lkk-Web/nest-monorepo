@@ -9,7 +9,7 @@ export class JwtDecodeGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest()
-    
+
     // 检查是否需要跳过JWT解码
     const openAuthorize = this.reflector.get<boolean>(AUTHORIZE_KEY_METADATA, context.getHandler())
     if (openAuthorize) {
@@ -18,7 +18,7 @@ export class JwtDecodeGuard implements CanActivate {
 
     // 从请求中获取token
     let token: string
-    
+
     // 优先从Authorization header获取
     if (request.headers['authorization']) {
       token = request.headers['authorization']
@@ -32,19 +32,16 @@ export class JwtDecodeGuard implements CanActivate {
       token = request.query.token
     }
 
-    if (!token) {
-      throw new HttpException('Token不能为空', 401)
-    }
+    if (!token) throw new HttpException('Token不能为空', 401)
 
     try {
       // 解码JWT token
       const payload = jwtDecode(token)
-      
+
       if (!payload || !payload.id) {
         throw new HttpException('无效的token', 401)
       }
 
-      // 将解码后的信息附加到请求对象上
       request.decodedJwt = {
         token: token,
         payload: payload,
