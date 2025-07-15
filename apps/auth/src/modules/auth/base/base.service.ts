@@ -273,10 +273,10 @@ export class MiService {
     return {
       valid: true,
       user: {
-        id: tokenRecord.user.id,
-        phone: tokenRecord.user.phone,
-        name: tokenRecord.user.name,
-        platform: tokenRecord.platform,
+        id: tokenRecord.dataValues.user.id,
+        phone: tokenRecord.dataValues.user.phone,
+        name: tokenRecord.dataValues.user.name,
+        platform: tokenRecord.dataValues.platform,
       },
     }
   }

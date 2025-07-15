@@ -5,6 +5,7 @@ import { join } from 'path'
 import { pathConstant } from '@common/constant'
 import YAML = require('yaml')
 import fs = require('fs')
+import { MicroserviceOptions, Transport } from '@nestjs/microservices'
 
 let buffer = fs.readFileSync(process.env.RUN_ENV || 'config.yaml', 'utf8')
 const envs: { [key: string]: any } = YAML.parse(buffer)
@@ -46,6 +47,7 @@ export const COS_CONFIG = {
   domain: envs.cos.domain,
   dir: info.appName + '/uploads', // cos文件路径, 不定义则会上传至bucket的根目录
 }
+
 export const REDIS: IoRedisOptions = {
   expiredTime: 1500,
   ...envs.redis,
@@ -85,6 +87,14 @@ export const ApiLoggerConfig: ApiLoggerOptions = {
   ...envs.apiLogger,
   dbPath: join(pathConstant.root, 'doc/logs.sqlite'),
   filterRequestMethods: ['OPTIONS', 'HEAD'],
+}
+
+export const MicroserviceConfig: MicroserviceOptions = {
+  transport: Transport.TCP,
+  options: {
+    host: envs.microservice.MICROSERVICE_HOST || 'localhost',
+    port: parseInt(envs.microservice.MICROSERVICE_PORT) || 3001,
+  },
 }
 
 /*

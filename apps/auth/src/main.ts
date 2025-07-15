@@ -15,6 +15,8 @@ import initApiLogger from 'api-stack-log'
 import express = require('express')
 import { User } from '@model/user'
 import * as AuthModules from '@modules/auth/index'
+import { Transport, MicroserviceOptions } from '@nestjs/microservices'
+
 // 微信支付回调配置
 // const bodyParser = require('body-parser')
 // require('body-parser-xml')(bodyParser)
@@ -34,11 +36,17 @@ async function bootstrap() {
   const iocContext = app.select(AppModule)
   const logger = app.select(LoggerModule).get(LoggerProvider)
   app.useLogger(logger)
+
+  // 微服务
+  const microserviceOptions: MicroserviceOptions | any = configs.MicroserviceConfig
+  app.connectMicroservice(microserviceOptions)
+  await app.startAllMicroservices()
+
   // 微信支付回调配置
   // app.use(bodyParser.xml())
   // 同步单个表结构
   try {
-    await User.sync({ alter: true, force: false })
+    // await User.sync({ alter: true, force: false })
   } catch (e) {
     console.log(e)
   }
@@ -55,7 +63,6 @@ async function bootstrap() {
   })
   process.on('unhandledRejection', function (reason, promise) {
     console.error('线程异常未处理=>>', reason)
-    console.error('注:该异常系统容易崩溃')
     logger.error('线程异常未处理=>>' + reason['message'])
   })
   // 异常捕捉格式化
@@ -73,70 +80,14 @@ async function bootstrap() {
   // 创建接口文档
   if (configs.info.isDebug) {
     // ips = getLocalIP()
-    swaggerStart(app, { title: '微服务权限文档', path: 'auth', modules: AuthModules, desc: '' })
+    // swaggerStart(app, { title: '微服务权限文档', path: 'auth', modules: AuthModules, desc: '' }, configs.info.port)
   }
 
   // 启动
   await app.listen(configs.info.port)
-  console.log('[server start]', `http://127.0.0.1:${configs.info.port}/`)
-}
 
-//swagger文档 配置
-function swaggerStart(app: INestApplication, options: SwaggerStartOptions) {
-  try {
-    const config = new DocumentBuilder()
-      .addBearerAuth()
-      .setTitle(options.title)
-      .setDescription(options.desc || '')
-      .setVersion('1.0')
-      .build()
-    const documentOptions: SwaggerDocumentOptions = {}
-    if (options.modules) {
-      documentOptions.include = [...(Object.values(options.modules) as Array<Function>)]
-    }
-    const document = SwaggerModule.createDocument(app, config, documentOptions)
-    const prefix = options.path.replace(/\//, '_')
-    SwaggerModule.setup(`doc/${options.path}`, app, document, {
-      customCss: `.swagger-ui .model-box-control, .swagger-ui .models-control, .swagger-ui .opblock-summary-control {
-        all: inherit;
-        border-bottom: 0;
-        cursor: pointer;
-        flex: 1;
-        padding: 0;
-        user-select: text;
-       }`,
-      customJsStr: `
-        // 保存原生方法
-        const originalGetItem = localStorage.getItem.bind(localStorage)
-        const originalSetItem = localStorage.setItem.bind(localStorage)
-        const authorizationKey = "${prefix}_authorized"
-        // 重写 getItem
-        localStorage.getItem = function(key) {
-          const newKey = key === 'authorized'?authorizationKey:key
-          return originalGetItem(newKey)
-        }
-        // 重写 setItem
-        localStorage.setItem = function(key, value) {
-          const newKey = key === 'authorized'?authorizationKey:key
-          originalSetItem(newKey, value)
-        }
-      `,
-      swaggerOptions: {
-        persistAuthorization: true,
-      },
-    })
-    setTimeout(() => {
-      console.log(`[${options.title}]`, `http://127.0.0.1:${configs.info.port}/doc/${options.path}`)
-    }, 300)
-  } catch (e) {
-    console.log(e)
-  }
-}
-interface SwaggerStartOptions {
-  modules?: any
-  desc?: string
-  title: string
-  path: string
+  console.log('[microservice start]', `TCP://localhost:${microserviceOptions.options.port}`)
+  console.log('[server start]', `http://127.0.0.1:${configs.info.port}/`)
 }
 
 bootstrap()
