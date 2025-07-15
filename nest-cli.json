@@ -13,31 +13,13 @@
         "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
       }
     },
-    "auth-service": {
+    "auth": {
       "type": "application",
-      "root": "apps/auth-service",
+      "root": "apps/auth",
       "entryFile": "main",
-      "sourceRoot": "apps/auth-service/src",
+      "sourceRoot": "apps/auth/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/auth-service/tsconfig.app.json"
-      }
-    },
-    "base-info-service": {
-      "type": "application",
-      "root": "apps/base-info-service",
-      "entryFile": "main",
-      "sourceRoot": "apps/base-info-service/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/base-info-service/tsconfig.app.json"
-      }
-    },
-    "notification-service": {
-      "type": "application",
-      "root": "apps/notification-service",
-      "entryFile": "main",
-      "sourceRoot": "apps/notification-service/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/notification-service/tsconfig.app.json"
+        "tsConfigPath": "apps/auth/tsconfig.build.json"
       }
     },
     "main": {
@@ -49,13 +31,13 @@
         "tsConfigPath": "apps/main/tsconfig.build.json"
       }
     },
-    "server1": {
+    "notification-service": {
       "type": "application",
-      "root": "apps/server1",
+      "root": "apps/notification-service",
       "entryFile": "main",
-      "sourceRoot": "apps/server1/src",
+      "sourceRoot": "apps/notification-service/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/server1/tsconfig.json"
+        "tsConfigPath": "apps/notification-service/tsconfig.app.json"
       }
     }
   }
