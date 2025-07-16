@@ -1,21 +1,18 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import * as configs from '@common/config'
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { ExceptionCatchFilter } from '@core/filter/exception'
 import { DtoPipe } from '@core/pipe'
 import { LoggerModule, LoggerProvider } from './library/logger'
 import { LogInterceptor } from '@core/interceptor/log'
 import { join } from 'path'
 import { AbnormalFilter } from './core/filter/abnormalFilter'
-import { INestApplication } from '@nestjs/common'
-import { SwaggerDocumentOptions } from '@nestjs/swagger/dist/interfaces'
 import * as os from 'os'
 import initApiLogger from 'api-stack-log'
 import express = require('express')
-import { User } from '@model/user'
 import * as AuthModules from '@modules/auth/index'
-import { Transport, MicroserviceOptions } from '@nestjs/microservices'
+import { MicroserviceOptions } from '@nestjs/microservices'
+import { swaggerStart } from '@library/utils/swagger'
 
 // 微信支付回调配置
 // const bodyParser = require('body-parser')
@@ -80,7 +77,7 @@ async function bootstrap() {
   // 创建接口文档
   if (configs.info.isDebug) {
     // ips = getLocalIP()
-    // swaggerStart(app, { title: '微服务权限文档', path: 'auth', modules: AuthModules, desc: '' }, configs.info.port)
+    swaggerStart(app, { title: '微服务权限文档', path: 'auth', modules: AuthModules, desc: '' }, configs.info.port)
   }
 
   // 启动
