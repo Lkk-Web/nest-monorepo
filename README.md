@@ -1,4 +1,4 @@
-# NestJS Monorepo HR 系统
+# NestJS Monorepo
 
 基于 NestJS 框架，采用微服务架构和 Monorepo。
 
