@@ -9,7 +9,7 @@ const { ClientProxy, ClientProxyFactory, Transport } = require('@nestjs/microser
 const client = ClientProxyFactory.create({
   transport: Transport.TCP,
   options: {
-    host: 'localhost',
+    host: '127.0.0.1',
     port: 7999,
   },
 })
@@ -18,7 +18,7 @@ async function testMicroservice() {
   try {
     // 连接到微服务
     await client.connect()
-    console.log('✅ 微服务 TCP://localhost:3001 连接成功!')
+    console.log('✅ 微服务 TCP://127.0.0.1:3001 连接成功!')
 
     const healthResult = await client.send('auth.health.check', {}).toPromise()
     console.log('✅ 健康检查结果:', JSON.stringify(healthResult, null, 2))
@@ -31,8 +31,7 @@ async function testMicroservice() {
       .toPromise()
     console.log('📝 无效token验证结果:', JSON.stringify(invalidTokenResult, null, 2))
 
-    // 测试token验证（空token）
-    console.log('\n🔍 测试token验证（有效 token）...')
+    // 测试token验证
     const emptyTokenResult = await client
       .send('auth.verify.token', {
         token:
@@ -46,7 +45,7 @@ async function testMicroservice() {
   } catch (error) {
     console.error('❌ 测试失败:', error.message)
     if (error.code === 'ECONNREFUSED') {
-      console.error('💡 请确保Auth微服务正在运行在 TCP://localhost:3001')
+      console.error('💡 请确保Auth微服务正在运行在 TCP://localhost:7999')
     }
   } finally {
     // 关闭连接

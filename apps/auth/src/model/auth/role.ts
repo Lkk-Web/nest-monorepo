@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger'
 import { Table, Column, DataType } from 'sequelize-typescript'
 import { BaseDate } from "@model/shared/baseDate";
 
-@Table({ tableName: 'role', freezeTableName: true, timestamps: true })
+@Table({ tableName: 'auth_role', freezeTableName: true, timestamps: true })
 export class Role extends BaseDate<Role> {
   @ApiProperty({ name: 'name', type: String, description: '角色名称', required: true })
   @Column({

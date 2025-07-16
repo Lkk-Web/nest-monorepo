@@ -4,7 +4,7 @@ import { BaseDate } from '@model/shared/baseDate'
 import { Role } from './role'
 import { TokenInfo } from './tokenInfo'
 
-@Table({ tableName: 'user', freezeTableName: true, timestamps: true })
+@Table({ tableName: 'auth_user', freezeTableName: true, timestamps: true })
 export class User extends BaseDate<User> {
   @ApiProperty({ name: 'name', type: String, description: '姓名', required: false })
   @Column({

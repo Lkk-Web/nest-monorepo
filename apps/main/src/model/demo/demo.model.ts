@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Table, Column, DataType, Model, DefaultScope, Unique } from 'sequelize-typescript'
-import { BaseModel } from './shared/base.model'
+import { BaseModel } from '../shared/base.model'
 
-@Table({ tableName: 'demo', freezeTableName: false, timestamps: true })
+@Table({ tableName: 'de_demo', freezeTableName: false, timestamps: true })
 export class Demo extends BaseModel<Demo> {
   @ApiProperty({ name: 'disabled', type: Boolean, description: '不可用', required: false })
   @Column({ comment: '不可用', type: DataType.BOOLEAN })

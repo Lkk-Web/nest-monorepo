@@ -15,7 +15,6 @@ import { SwaggerDocumentOptions } from '@nestjs/swagger/dist/interfaces'
 import * as os from 'os'
 import initApiLogger from 'api-stack-log'
 import express = require('express')
-import { User } from '@model/user'
 // 微信支付回调配置
 // const bodyParser = require('body-parser')
 // require('body-parser-xml')(bodyParser)
@@ -39,7 +38,7 @@ async function bootstrap() {
   // app.use(bodyParser.xml())
   // 同步单个表结构
   try {
-    await User.sync({ alter: true, force: false })
+    // await User.sync({ alter: true, force: false })
   } catch (e) {
     console.log(e)
   }

@@ -1,20 +1,19 @@
 import { PLATFORM } from '@common/enum'
-import { AdminAuthGuard } from '@core/guards/admin.guard'
-import {applyDecorators, Controller, HttpCode, UseGuards} from '@nestjs/common'
-import { ClientAuthGuard } from '../guards/client.guard'
-import {ApiResponse} from "@nestjs/swagger";
+import { applyDecorators, Controller, HttpCode, UseGuards } from '@nestjs/common'
+import { MicroserviceAuthGuard } from '@core/guards/Auth.guard'
+import { ApiResponse } from '@nestjs/swagger'
 
 /**
- * 自动加入web/前缀路由的Controller注解守卫 UseGuards(WebAuthGuard)
+ * 微服务鉴权
  */
-export function ClientController(prefix: string) {
-  return applyDecorators(Controller(`${PLATFORM.client}/v1/${prefix}`), UseGuards(ClientAuthGuard))
+export function ClientAuth(prefix: string) {
+  return applyDecorators(Controller(`${PLATFORM.client}/v1/${prefix}`), UseGuards(MicroserviceAuthGuard))
 }
-export function AdminController(prefix: string) {
-  return applyDecorators(Controller(`${PLATFORM.admin}/v1/${prefix}`), UseGuards(AdminAuthGuard))
+export function AdminAuth(prefix: string) {
+  return applyDecorators(Controller(`${PLATFORM.admin}/v1/${prefix}`), UseGuards(MicroserviceAuthGuard))
 }
 
-export function ApiRes(statusCode:number,config?:{desc?:string,type?:any}) {
-  config = config||{};
-  return applyDecorators(HttpCode(statusCode),ApiResponse({status:statusCode,description:config.desc||"成功",type:config.type||Object}));
+export function ApiRes(statusCode: number, config?: { desc?: string; type?: any }) {
+  config = config || {}
+  return applyDecorators(HttpCode(statusCode), ApiResponse({ status: statusCode, description: config.desc || '成功', type: config.type || Object }))
 }

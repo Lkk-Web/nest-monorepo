@@ -1,10 +1,11 @@
 import { APP_ENV } from './enum'
-import { AliOssAccount, BusinessInfo, Configs, IoRedisOptions, ReMailbox, SequlizeOptions, WeChat } from '@common/interface'
+import { AliOssAccount, BusinessInfo, Configs, IoRedisOptions, MicroserviceConfig, ReMailbox, SequlizeOptions, WeChat } from '@common/interface'
 import { ApiLoggerOptions } from 'api-stack-log'
 import { join } from 'path'
 import { pathConstant } from '@common/constant'
 import YAML = require('yaml')
 import fs = require('fs')
+import { Transport } from '@nestjs/microservices'
 
 let buffer = fs.readFileSync(process.env.RUN_ENV || 'config.yaml', 'utf8')
 const envs: { [key: string]: any } = YAML.parse(buffer)
@@ -85,6 +86,17 @@ export const ApiLoggerConfig: ApiLoggerOptions = {
   ...envs.apiLogger,
   dbPath: join(pathConstant.root, 'doc/logs.sqlite'),
   filterRequestMethods: ['OPTIONS', 'HEAD'],
+}
+
+/**
+ * Auth 微服务配置
+ */
+export const authServiceConfig: MicroserviceConfig = {
+  transport: Transport.TCP,
+  options: {
+    host: envs.microservice.MICROSERVICE_HOST || '127.0.0.1',
+    port: parseInt(envs.microservice.MICROSERVICE_PORT) || 3001,
+  },
 }
 
 /*

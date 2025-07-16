@@ -3,7 +3,7 @@ import { User } from './user'
 import { PLATFORM } from '@common/enum'
 
 @Table({
-  tableName: 'auth_tokenInfo',
+  tableName: 'auth_token_info',
   timestamps: true,
   paranoid: true, // 软删除
 })

@@ -1,6 +1,6 @@
 import { Injectable, HttpException } from '@nestjs/common'
 import { TokenGetUserDto, UserLoginDto, UserRegisterDto, MicroserviceTokenVerifyDto, RefreshTokenDto, LogoutDto } from './base.dto'
-import { User } from '@model/user'
+import { User } from '@model/auth/user'
 import { PLATFORM } from '@common/enum'
 import { CryptoUtil, jwtDecode, jwtEncodeInExpire } from '@library/utils/crypt.util'
 import { Aide } from '@library/utils/aide'
@@ -9,7 +9,7 @@ import { Pagination } from '@common/interface'
 import { FindPaginationOptions } from '@model/shared/interface'
 import { Paging } from '@library/utils/paging'
 import * as crypto from 'crypto'
-import { TokenInfo } from '@model/tokenInfo'
+import { TokenInfo } from '@model/auth/tokenInfo'
 import { DtoPipe } from '@core/pipe'
 
 @Injectable()

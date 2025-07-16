@@ -1,4 +1,5 @@
 import { ENV } from '@common/type';
+import { Transport } from '@nestjs/microservices';
 export interface ResponseBody<T> {
   data: T;
   code: number;
@@ -133,6 +134,14 @@ export interface BufferCacheInfo {
   buffer: Buffer;//文件流
   name: string;//文件名+后缀
   time: number;//添加时间
+}
+
+export interface MicroserviceConfig {
+  transport: Transport
+  options: {
+    host: string
+    port: number
+  }
 }
 
 
