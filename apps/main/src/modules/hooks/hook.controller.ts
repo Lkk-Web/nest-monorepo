@@ -3,12 +3,12 @@ import {All, Body, Get, HttpCode, HttpStatus, Inject, Param, Post, Put, Query, R
 import {
     GitNotifyData
 } from "./hook.dto";
-import {OpenAuthorize} from "@core/decorator/authorize";
 import {RedisProvider} from "@library/redis";
 import {SuperRedis} from "@sophons/redis";
 // import * as request from 'request-promise'
 import {HookService} from "./hook.service";
 import {HookTwoService} from "./hookTwo.service";
+import { OpenAuthorize } from "@core/decorator/metaData";
 
 // @ApiTags("调试222")
 @Controller("hook")
