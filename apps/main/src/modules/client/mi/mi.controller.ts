@@ -1,4 +1,4 @@
-import { OpenAuthorize } from '@core/decorator/authorize'
+import { ApiPlatformWhitelist, OpenAuthorize } from '@core/decorator/metaData'
 import { Controller, HttpCode, HttpException, HttpStatus, Post, Req, Request, UploadedFile, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { MiService } from './mi.service'
@@ -8,14 +8,16 @@ import { FileUploadDto } from '../../file/file.dto'
 import { Express } from 'express'
 import { FileService } from '@modules/file/file.service'
 import { FileSizeValidationPipe } from '@core/pipe/fileSizeValidationPipe'
+import { ClientAuth } from '@core/decorator/controller'
 
-@Controller('mi')
+@ClientAuth('mi')
 @ApiTags('我的')
 @ApiBearerAuth()
 export class MiController {
   constructor(private readonly service: MiService, private readonly fileService: FileService) {}
 
   @ApiOperation({ summary: 'API health check' })
+  @ApiPlatformWhitelist(['admin'])
   @Post('health')
   async postAutoToken(@Request() req, @CurrentUser() user: any) {
     return { message: 'success', code: 200, data: user }

@@ -4,6 +4,7 @@ import { MiService } from './mi.service'
 import { FileService } from '@modules/file/file.service'
 import { AdminAuth } from '@core/decorator/controller'
 import { CurrentUser } from '@core/decorator/request'
+import { ApiPlatformWhitelist } from '@core/decorator/metaData'
 
 @ApiTags('我的')
 @ApiBearerAuth()
@@ -13,7 +14,15 @@ export class MiController {
 
   @ApiOperation({ summary: 'API health check' })
   @Post('health')
-  async postAutoToken(@Request() req, @CurrentUser() user: any) {
+  @ApiPlatformWhitelist(['admin', 'client'])
+  async health(@Request() req, @CurrentUser() user: any) {
+    return { message: 'success', code: 200, data: { user } }
+  }
+
+  @ApiOperation({ summary: 'API health check' })
+  @Post('health1')
+  @ApiPlatformWhitelist(['client'])
+  async health1(@Request() req, @CurrentUser() user: any) {
     return { message: 'success', code: 200, data: { user } }
   }
 }

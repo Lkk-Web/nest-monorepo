@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException, Inject } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
-import { AUTHORIZE_KEY_METADATA } from '@core/decorator/authorize'
+import { AUTHORIZE_KEY_METADATA } from '@core/decorator/metaData'
 import { ClientProxy } from '@nestjs/microservices'
 import { firstValueFrom, timeout, catchError } from 'rxjs'
 import { of } from 'rxjs'
@@ -20,23 +20,11 @@ export class MicroserviceAuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest()
     const authHeader = request.headers.authorization
 
-    if (!authHeader) {
-      throw new UnauthorizedException('缺少Authorization token')
-    }
+    if (!authHeader) throw new UnauthorizedException('缺少Authorization token')
 
     const token = authHeader.replace('Bearer ', '')
     if (!token) {
       throw new UnauthorizedException('Token格式错误')
-    }
-
-    // 从请求路径中提取平台信息
-    const path = request.route?.path || request.url
-    let platform = 'client' // 默认平台
-
-    if (path.includes('/admin/')) {
-      platform = 'admin'
-    } else if (path.includes('/client/')) {
-      platform = 'client'
     }
 
     try {
@@ -45,7 +33,6 @@ export class MicroserviceAuthGuard implements CanActivate {
         this.authClient
           .send('auth.verify.token', {
             token,
-            platform,
             serviceId: 'main-service',
           })
           .pipe(
@@ -60,13 +47,12 @@ export class MicroserviceAuthGuard implements CanActivate {
       if (result.valid) {
         // 将用户信息附加到请求对象
         request.user = result.user
-        console.log('[MicroserviceAuthGuard] 用户验证成功:', result.user.id, '平台:', platform)
         return true
       } else {
-        throw new UnauthorizedException(result.message || 'Token验证失败')
+        throw new UnauthorizedException(result.message)
       }
     } catch (error) {
-      throw new UnauthorizedException('Token验证失败')
+      throw new UnauthorizedException(error)
     }
   }
 }
