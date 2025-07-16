@@ -38,11 +38,6 @@ export class MicroserviceTokenVerifyDto {
   @IsString()
   token: string
 
-  @ApiProperty({ name: 'platform', required: true, description: '请求平台', enum: PLATFORM })
-  @IsNotEmpty({ message: '平台类型不能为空' })
-  @IsEnum(PLATFORM, { message: '无效的平台类型' })
-  platform: PLATFORM
-
   @ApiProperty({ name: 'serviceId', required: false, description: '微服务标识', type: String })
   @IsOptional()
   serviceId?: string

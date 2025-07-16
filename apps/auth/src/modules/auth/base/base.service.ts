@@ -115,8 +115,7 @@ export class MiService {
 
   async tokenGetUser(dto: TokenGetUserDto) {
     // 解码 JWT token
-    let payload = jwtDecode(dto.token)
-    console.log('payload', payload)
+    const payload = jwtDecode(dto.token)
     if (!payload || !payload.id) {
       throw new HttpException('无效的token', 401)
     }
@@ -176,14 +175,9 @@ export class MiService {
     const tokenRecord = await TokenInfo.findOne({
       where: {
         refreshToken: dto.refreshToken,
+        platform: dto.platform,
         isActive: true,
       },
-      include: [
-        {
-          model: User,
-          as: 'user',
-        },
-      ],
     })
 
     if (!tokenRecord) {
