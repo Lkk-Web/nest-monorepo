@@ -35,8 +35,13 @@ async function bootstrap() {
 
   // 微服务
   const microserviceOptions: MicroserviceOptions | any = configs.MicroserviceConfig
-  app.connectMicroservice(microserviceOptions)
-  await app.startAllMicroservices()
+  try {
+    app.connectMicroservice(microserviceOptions)
+    await app.startAllMicroservices()
+  } catch (error) {
+    logger.error('微服务启动失败: ' + error.message)
+    throw error
+  }
 
   // 微信支付回调配置
   // app.use(bodyParser.xml())
@@ -54,11 +59,9 @@ async function bootstrap() {
   app.useGlobalInterceptors(iocContext.get(LogInterceptor))
   //监听线程异常
   process.on('uncaughtException', function (err) {
-    console.error('线程出现异常=>>', err)
     logger.error('线程出现异常=>>' + err.message)
   })
   process.on('unhandledRejection', function (reason, promise) {
-    console.error('线程异常未处理=>>', reason)
     logger.error('线程异常未处理=>>' + reason['message'])
   })
   // 异常捕捉格式化
