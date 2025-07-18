@@ -1,11 +1,10 @@
 {
-  "name": "monorepo-main",
+  "name": "@monorepo/auth",
   "version": "0.0.1",
   "description": "",
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest"
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
   "dependencies": {},
   "devDependencies": {}

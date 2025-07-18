@@ -79,7 +79,6 @@ async function bootstrap() {
   await app.listen(configs.info.port)
 
   console.log('[microservice start]', `TCP://localhost:${microserviceOptions.options.port}`)
-  console.log('[server start]', `http://127.0.0.1:${configs.info.port}/`)
 }
 
 bootstrap()

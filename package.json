@@ -5,6 +5,9 @@
   "author": "Kye",
   "private": true,
   "license": "",
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
     "build": "nest build",
     "dev": "concurrently \"npm run auth\" \"npm run main\" --names \"AUTH,MAIN\" --prefix-colors \"blue,green\"",
